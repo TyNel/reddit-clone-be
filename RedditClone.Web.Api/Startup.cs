@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Reddit.Services.Interfaces;
+using Reddit.Services.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +50,8 @@ namespace RedditClone.Web.Api
                       .AllowCredentials()
                     );
             });
+
+            services.AddScoped<IRedditService, RedditService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -9,8 +9,7 @@ namespace Reddit.Models.Requests
 {
     public class SubRuleAdd
     {
-`       [Required]
-        
+        [Required]
         public int RuleParentId { get; set; }
 
         [Required]
