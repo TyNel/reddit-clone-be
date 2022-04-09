@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Reddit.Models.Entities;
 using Reddit.Models.Requests;
 using Reddit.Services.Interfaces;
 using System;
@@ -25,6 +26,25 @@ namespace RedditClone.Web.Api.Controllers
         public async Task<IActionResult> AddUser([FromBody] UserAdd user)
         {
             return Ok(await _service.AddUser(user));
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private IActionResult BadRequestModelState()
+        {
+            IEnumerable<string> errorMessages = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage));
+
+            return BadRequest(new ErrorResponse(errorMessages));
         }
 
     }

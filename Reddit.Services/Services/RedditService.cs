@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Reddit.Models.Entities;
 using Reddit.Models.Requests;
+using Reddit.Services.CommonMethods;
 using Reddit.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace Reddit.Services.Services
                 parameter.Add("userId", 0, DbType.Int32, ParameterDirection.Output);
                 parameter.Add("@userName", user.UserName);
                 parameter.Add("@email", user.Email);
-                parameter.Add("@password", user.Password);
+                parameter.Add("@password", PwManager.Encrypt(user.Password));
 
                 await Connection.QueryAsync<User>(proc, parameter, commandType: CommandType.StoredProcedure);
 
