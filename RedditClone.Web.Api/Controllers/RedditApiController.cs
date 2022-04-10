@@ -21,11 +21,64 @@ namespace RedditClone.Web.Api.Controllers
             _service = service;
         }
 
-        [HttpPost("addUser")]
+        [HttpPost("AddUser")]
 
         public async Task<IActionResult> AddUser([FromBody] UserAdd user)
         {
-            return Ok(await _service.AddUser(user));
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestModelState();
+                }
+
+                User existingEmail = await _service.GetUserByEmail(user.Email);
+
+                if (existingEmail != null)
+                {
+                    return Conflict(new ErrorResponse("Email already exists"));
+                }
+
+                else
+                {
+                    return Ok(await _service.AddUser(user));
+                }
+            }
+
+            catch (Exception ex)
+
+            {
+                ErrorResponse response = new ErrorResponse($"Error: ${ex.Message}");
+
+                return StatusCode(500, response);
+            }
+
+
+        }
+
+        [HttpPost("UserLogin")]
+
+        public async Task<IActionResult> UserLogin([FromBody] UserLogin user)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestModelState();
+                }
+
+                else
+                {
+                    return Ok(await _service.UserLogin(user));
+                }
+            }
+
+            catch (Exception ex)
+            {
+                ErrorResponse response = new ErrorResponse($"Error: ${ex.Message}");
+
+                return StatusCode(500, response);
+            }
         }
 
 

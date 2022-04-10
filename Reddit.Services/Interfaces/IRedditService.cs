@@ -1,4 +1,5 @@
-﻿using Reddit.Models.Requests;
+﻿using Reddit.Models.Entities;
+using Reddit.Models.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,9 @@ namespace Reddit.Services.Interfaces
     public interface IRedditService
     {
         Task<int> AddUser(UserAdd user);
+
+        Task<User> GetUserByEmail(string email);
+
+        Task<User> UserLogin(UserLogin user);
     }
 }

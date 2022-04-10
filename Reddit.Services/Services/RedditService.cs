@@ -53,6 +53,41 @@ namespace Reddit.Services.Services
 
             }
         }
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            using(IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_User_GetByEmail]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@email", email);
+
+                var response = await Connection.QueryAsync<User>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _user = response.FirstOrDefault();
+
+                return _user;
+            }
+        }
+
+        public async Task<User> UserLogin(UserLogin user)
+        {
+            using(IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_Users_Login]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@email", user.Email);
+                parameter.Add("@password", PwManager.Encrypt(user.Password));
+
+                var response = await Connection.QueryAsync<User>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _user = response.FirstOrDefault();
+
+                return _user;
+            }
+        }
    
     }
 }
