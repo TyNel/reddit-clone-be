@@ -19,7 +19,15 @@ namespace Reddit.Services.Services
         private readonly IConfiguration _config;
 
         User _user = new User();
-        
+        Comment _comment = new Comment();
+        CommentLiked _commentLiked = new CommentLiked();
+        Post _post = new Post();
+        PostLike _postLiked = new PostLike();
+        SubMember _subMember = new SubMember();
+        SubReddit _subReddit = new SubReddit();
+        SubRule _subRule = new SubRule();
+        SubTopic _subTopic = new SubTopic();
+
         public RedditService(IConfiguration configuration)
         {
             _config = configuration;
@@ -88,6 +96,51 @@ namespace Reddit.Services.Services
                 return _user;
             }
         }
-   
+
+        public async Task<Comment> AddComment(CommentAdd comment)
+        {
+            using(IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_Comments_ADD]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@commentId", 0, DbType.Int32, ParameterDirection.Output);
+                parameter.Add("@commentUserId", comment.CommentUserId);
+                parameter.Add("@commentParentId", comment.CommentParentId);
+                parameter.Add("@commentBody", comment.CommentBody);
+                parameter.Add("@commentParentPostId", comment.CommentParentPostId);
+
+                var response = await Connection.QueryAsync<Comment>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _comment = response.FirstOrDefault();
+
+                return _comment;
+            }
+        }
+
+        public async Task<Post> AddPost(PostAdd post)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_Posts_ADD]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@@postId", 0, DbType.Int32, ParameterDirection.Output);
+                parameter.Add("@postAuthor", post.PostAuthor);
+                parameter.Add("@postCommunity", post.PostCommunity);
+                parameter.Add("@postTitle", post.PostTitle);
+                parameter.Add("@postBodyText", post.PostBody);
+                parameter.Add("@postImageUrl", post.PostImageUrl);
+                parameter.Add("@postLink", post.PostLink);
+               
+
+                var response = await Connection.QueryAsync<Post>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _post = response.FirstOrDefault();
+
+                return _post;
+            }
+        }
+
     }
 }

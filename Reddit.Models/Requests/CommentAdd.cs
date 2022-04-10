@@ -24,7 +24,7 @@ namespace Reddit.Models.Requests
 
         [Required]
 
-        public string CommentParentPostId { get; set; }
+        public int CommentParentPostId { get; set; }
 
 
 

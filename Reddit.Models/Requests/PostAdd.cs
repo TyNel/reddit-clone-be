@@ -11,7 +11,7 @@ namespace Reddit.Models.Requests
     {
         [Required]
         [StringLength(20, MinimumLength = 2)]
-         public string PostAuthor { get; set; }
+        public string PostAuthor { get; set; }
 
         [Required]
         public int PostCommunity { get; set; }

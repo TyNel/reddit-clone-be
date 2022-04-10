@@ -15,5 +15,10 @@ namespace Reddit.Services.Interfaces
         Task<User> GetUserByEmail(string email);
 
         Task<User> UserLogin(UserLogin user);
+
+        Task<Comment> AddComment(CommentAdd comment);
+
+        Task<Post> AddPost(PostAdd post);
+
     }
 }

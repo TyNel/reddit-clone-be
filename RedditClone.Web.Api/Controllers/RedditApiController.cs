@@ -81,17 +81,56 @@ namespace RedditClone.Web.Api.Controllers
             }
         }
 
+        [HttpPost("AddComment")]
 
+        public async Task<IActionResult> AddComment([FromBody] CommentAdd comment)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestModelState();
+                }
 
+                else
+                {
+                    return Ok(await _service.AddComment(comment));
+                }
+            }
 
+            catch (Exception ex)
+            {
+                ErrorResponse response = new ErrorResponse($"Error: ${ex.Message}");
 
+                return StatusCode(500, response);
+            }
+        }
 
+        [HttpPost("AddPost")]
 
+        public async Task<IActionResult> AddPost([FromBody] PostAdd post)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestModelState();
+                }
 
+                else
+                {
+                    return Ok(await _service.AddPost(post));
+                }
+            }
 
+            catch (Exception ex)
+            {
+                ErrorResponse response = new ErrorResponse($"Error: ${ex.Message}");
 
-
-
+                return StatusCode(500, response);
+            }
+        }
+        
 
         private IActionResult BadRequestModelState()
         {
