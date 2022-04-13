@@ -27,6 +27,7 @@ namespace Reddit.Services.Services
         SubReddit _subReddit = new SubReddit();
         SubRule _subRule = new SubRule();
         SubTopic _subTopic = new SubTopic();
+        SubNames _subName = new SubNames();
 
         public RedditService(IConfiguration configuration)
         {
@@ -79,6 +80,23 @@ namespace Reddit.Services.Services
             }
         }
 
+        public async Task<User> GetUserByUsername(string username)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_User_GetByUsername]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@userName", username);
+
+                var response = await Connection.QueryAsync<User>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _user = response.FirstOrDefault();
+
+                return _user;
+            }
+        }
+
         public async Task<User> UserLogin(UserLogin user)
         {
             using(IDbConnection dbConnection = Connection)
@@ -86,7 +104,7 @@ namespace Reddit.Services.Services
                 var proc = "[dbo].[R_Users_Login]";
                 var parameter = new DynamicParameters();
 
-                parameter.Add("@email", user.Email);
+                parameter.Add("@username", user.Username);
                 parameter.Add("@password", PwManager.Encrypt(user.Password));
 
                 var response = await Connection.QueryAsync<User>(proc, parameter, commandType: CommandType.StoredProcedure);
@@ -139,6 +157,18 @@ namespace Reddit.Services.Services
                 _post = response.FirstOrDefault();
 
                 return _post;
+            }
+        }
+
+        public async Task<IEnumerable<SubNames>> GetSubNames()
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_SubReddits_GETNAMES]";
+
+                var response = await Connection.QueryAsync<SubNames>(proc, commandType: CommandType.StoredProcedure);
+
+                return response.ToList();
             }
         }
 

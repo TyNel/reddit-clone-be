@@ -34,9 +34,16 @@ namespace RedditClone.Web.Api.Controllers
 
                 User existingEmail = await _service.GetUserByEmail(user.Email);
 
+                User existingUsername = await _service.GetUserByUsername(user.UserName);
+
                 if (existingEmail != null)
                 {
                     return Conflict(new ErrorResponse("Email already exists"));
+                }
+
+                if (existingUsername != null)
+                {
+                    return Conflict(new ErrorResponse("Username already exists"));
                 }
 
                 else
@@ -129,6 +136,13 @@ namespace RedditClone.Web.Api.Controllers
 
                 return StatusCode(500, response);
             }
+        }
+
+        [HttpGet("SubNames")]
+
+        public async Task<IActionResult> GetSubNames()
+        {
+            return Ok(await _service.GetSubNames());
         }
         
 

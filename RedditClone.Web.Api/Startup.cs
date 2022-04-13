@@ -35,10 +35,6 @@ namespace RedditClone.Web.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RedditClone.Web.Api", Version = "v1" });
             });
 
-            services.AddCors(c =>
-            {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-            });
 
             services.AddCors(options =>
             {
@@ -64,6 +60,8 @@ namespace RedditClone.Web.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RedditClone.Web.Api v1"));
             }
 
+            app.UseCors("CORSPolicy");
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -74,8 +72,7 @@ namespace RedditClone.Web.Api
             {
                 endpoints.MapControllers();
             });
-
-            app.UseCors("CORSPolicy");
+           
         }
     }
 }

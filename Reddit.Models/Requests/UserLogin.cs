@@ -10,9 +10,9 @@ namespace Reddit.Models.Requests
     public class UserLogin
     {
         [Required]
-        [EmailAddress]
+        [StringLength(20, MinimumLength = 2)]
 
-        public string Email { get; set; }
+        public string Username { get; set; }
         
         [Required]
         [StringLength(20, MinimumLength = 8)]
