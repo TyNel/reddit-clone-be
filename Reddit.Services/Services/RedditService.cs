@@ -143,7 +143,7 @@ namespace Reddit.Services.Services
                 var proc = "[dbo].[R_Posts_ADD]";
                 var parameter = new DynamicParameters();
 
-                parameter.Add("@@postId", 0, DbType.Int32, ParameterDirection.Output);
+                parameter.Add("@postId", 0, DbType.Int32, ParameterDirection.Output);
                 parameter.Add("@postAuthor", post.PostAuthor);
                 parameter.Add("@postCommunity", post.PostCommunity);
                 parameter.Add("@postTitle", post.PostTitle);
@@ -169,6 +169,24 @@ namespace Reddit.Services.Services
                 var response = await Connection.QueryAsync<SubNames>(proc, commandType: CommandType.StoredProcedure);
 
                 return response.ToList();
+            }
+        }
+
+        public async Task<SubReddit> GetSubReddit(string subName)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_SubReddits_GET]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@subName", subName);
+
+                var response = await Connection.QueryAsync<SubReddit>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _subReddit = response.FirstOrDefault();
+
+                return _subReddit;
+
             }
         }
 

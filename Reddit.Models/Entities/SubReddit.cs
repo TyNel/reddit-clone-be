@@ -20,6 +20,10 @@ namespace Reddit.Models.Entities
 
        public string SubCategory { get; set; }
 
+       public string Rules { get; set; }
+
+       public string Topics { get; set; }
+
        public DateTime DateAdded { get; set; }
     }
 }

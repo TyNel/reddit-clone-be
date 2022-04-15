@@ -144,6 +144,31 @@ namespace RedditClone.Web.Api.Controllers
         {
             return Ok(await _service.GetSubNames());
         }
+
+        [HttpGet("SubReddit")]
+
+        public async Task<IActionResult> GetSubReddit(string subName)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestModelState();
+                }
+
+                else
+                {
+                    return Ok(await _service.GetSubReddit(subName));
+                }
+            }
+
+            catch (Exception ex)
+            {
+                ErrorResponse response = new ErrorResponse($"Error: ${ex.Message}");
+
+                return StatusCode(500, response);
+            }
+        }
         
 
         private IActionResult BadRequestModelState()

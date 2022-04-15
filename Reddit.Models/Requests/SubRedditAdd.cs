@@ -15,7 +15,7 @@ namespace Reddit.Models.Requests
         public string SubName { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 1)]
+        [StringLength(100, MinimumLength = 1)]
         public string SubDescription { get; set; }
 
         [StringLength(50, MinimumLength = 1)]
