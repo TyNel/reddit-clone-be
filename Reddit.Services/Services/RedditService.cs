@@ -190,5 +190,17 @@ namespace Reddit.Services.Services
             }
         }
 
+        public async Task<IEnumerable<Post>> GetPosts()
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_Posts_GET]";
+
+                var response = await Connection.QueryAsync<Post>(proc, commandType: CommandType.StoredProcedure);
+
+                return response.ToList();
+            }
+        }
+
     }
 }

@@ -169,7 +169,14 @@ namespace RedditClone.Web.Api.Controllers
                 return StatusCode(500, response);
             }
         }
-        
+
+        [HttpGet("Posts")]
+
+        public async Task<IActionResult> GetPosts()
+        {
+            return Ok(await _service.GetPosts());
+        }
+
 
         private IActionResult BadRequestModelState()
         {

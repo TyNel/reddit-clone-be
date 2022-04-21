@@ -22,6 +22,10 @@ namespace Reddit.Models.Entities
 
         public string PostLink { get; set; }
 
+        public string SubName { get; set; }
+
+        public int CommentCount { get; set; }
+
         public DateTime DateAdded { get; set; }
 
         public DateTime DateModified { get; set; }

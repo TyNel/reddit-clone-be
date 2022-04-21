@@ -11,5 +11,7 @@ namespace Reddit.Models.Entities
         public int SubId { get; set; }
 
         public string SubName { get; set; }
+
+        public string SubIcon { get; set; }
     }
 }

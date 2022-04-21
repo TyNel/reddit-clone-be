@@ -26,5 +26,7 @@ namespace Reddit.Services.Interfaces
 
         Task<SubReddit> GetSubReddit(string subName);
 
+        Task<IEnumerable<Post>> GetPosts();
+
     }
 }
