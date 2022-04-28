@@ -18,11 +18,13 @@ namespace Reddit.Models.Entities
 
         public string PostBodyText { get; set; }
 
-        public string PostImage { get; set; }
+        public string postImageUrl { get; set; }
 
         public string PostLink { get; set; }
 
         public string SubName { get; set; }
+
+        public int VoteCount { get; set; }
 
         public int CommentCount { get; set; }
 

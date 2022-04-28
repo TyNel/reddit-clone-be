@@ -160,6 +160,26 @@ namespace Reddit.Services.Services
             }
         }
 
+        public async Task<PostLike> PostLike(PostLiked post)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_Posts_Like_Dislike_ADD]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@postLikeDislikeId", 0, DbType.Int32, ParameterDirection.Output);
+                parameter.Add("@likeDislikePostId", post.LikeDislikePostId);
+                parameter.Add("@postLikeDislikeUserId", post.LikeDislikeUserId);
+                parameter.Add("@postIsLike", post.PostIsLike);
+                
+                var response = await Connection.QueryAsync<PostLike>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _postLiked = response.FirstOrDefault();
+
+                return _postLiked;
+            }
+        }
+
         public async Task<IEnumerable<SubNames>> GetSubNames()
         {
             using (IDbConnection dbConnection = Connection)
@@ -197,6 +217,22 @@ namespace Reddit.Services.Services
                 var proc = "[dbo].[R_Posts_GET]";
 
                 var response = await Connection.QueryAsync<Post>(proc, commandType: CommandType.StoredProcedure);
+
+                return response.ToList();
+            }
+        }
+
+        public async Task<IEnumerable<Comment>> GetComments(int postId)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_Comments_GET]";
+
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@commentParentPostId", postId);
+
+                var response = await Connection.QueryAsync<Comment>(proc, parameter, commandType: CommandType.StoredProcedure);
 
                 return response.ToList();
             }

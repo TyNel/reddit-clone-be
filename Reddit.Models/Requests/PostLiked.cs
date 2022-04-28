@@ -18,7 +18,7 @@ namespace Reddit.Models.Requests
 
         [Required]
         [Range(0, 1)]
-        public byte PostIsLike { get; set; }
+        public int PostIsLike { get; set; }
 
        
     }

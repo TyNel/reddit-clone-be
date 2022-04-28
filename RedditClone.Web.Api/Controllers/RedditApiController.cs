@@ -138,6 +138,31 @@ namespace RedditClone.Web.Api.Controllers
             }
         }
 
+        [HttpPost("LikePost")]
+
+        public async Task<IActionResult> PostLike([FromBody] PostLiked post)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestModelState();
+                }
+
+                else
+                {
+                    return Ok(await _service.PostLike(post));
+                }
+            }
+
+            catch (Exception ex)
+            {
+                ErrorResponse response = new ErrorResponse($"Error: ${ex.Message}");
+
+                return StatusCode(500, response);
+            }
+        }
+
         [HttpGet("SubNames")]
 
         public async Task<IActionResult> GetSubNames()
@@ -177,6 +202,30 @@ namespace RedditClone.Web.Api.Controllers
             return Ok(await _service.GetPosts());
         }
 
+        [HttpGet("Comments")]
+
+        public async Task<IActionResult> GetComments(int postId)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestModelState();
+                }
+
+                else
+                {
+                    return Ok(await _service.GetComments(postId));
+                }
+            }
+
+            catch (Exception ex)
+            {
+                ErrorResponse response = new ErrorResponse($"Error: ${ex.Message}");
+
+                return StatusCode(500, response);
+            }
+        }
 
         private IActionResult BadRequestModelState()
         {

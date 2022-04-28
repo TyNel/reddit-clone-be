@@ -16,6 +16,10 @@ namespace Reddit.Models.Entities
 
         public string Password { get; set; }
 
+        public string PostVotes { get; set; }
+
+        public string CommentVotes { get; set; }
+
         public DateTime DateAdded { get; set; }
 
         public DateTime DateModified { get; set; }

@@ -12,11 +12,15 @@ namespace Reddit.Models.Entities
 
         public int CommentUserId { get; set; }
 
-        public int CommentParentId { get; set; }
+        public int? CommentParentId { get; set; }
 
-        public int CommentPostParentId { get; set; }
+        public int CommentParentPostId { get; set; }
 
         public string CommentBody { get; set; }
+
+        public string UserName { get; set; }
+
+        public int? VoteCount { get; set; }
 
         public DateTime DateAdded { get; set; }
 

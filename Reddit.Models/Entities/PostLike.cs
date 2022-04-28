@@ -10,10 +10,9 @@ namespace Reddit.Models.Entities
     {
         public int LikeDislikePostId { get; set; }
 
-        public int PostLikeDislikeUserId { get; set; }
+        public int PostIsLike { get; set; }
 
-        public byte PostIsLike { get; set; }
+        public int VoteCount { get; set; }
 
-        public DateTime DateAdded { get; set; }
     }
 }

@@ -28,5 +28,9 @@ namespace Reddit.Services.Interfaces
 
         Task<IEnumerable<Post>> GetPosts();
 
+        Task<IEnumerable<Comment>> GetComments(int postId);
+
+        Task<PostLike> PostLike(PostLiked post);
+
     }
 }

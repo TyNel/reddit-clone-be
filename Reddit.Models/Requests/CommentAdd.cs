@@ -13,9 +13,7 @@ namespace Reddit.Models.Requests
         
         public int CommentUserId { get; set; }
 
-        [Required]
-        
-        public int CommentParentId { get; set; }
+        public int? CommentParentId { get; set; }
 
         [Required]
         [StringLength(1000, MinimumLength = 1)]
