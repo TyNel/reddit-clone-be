@@ -21,7 +21,7 @@ namespace Reddit.Models.Requests
 
         public string PostTitle { get; set; }
 
-        [StringLength(1000, MinimumLength = 1)]
+        [StringLength(1000, MinimumLength = 0)]
 
         public string PostBody { get; set; }
 

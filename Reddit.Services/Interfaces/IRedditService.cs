@@ -32,5 +32,7 @@ namespace Reddit.Services.Interfaces
 
         Task<PostLike> PostLike(PostLiked post);
 
+        Task<CommentLike> CommentLike(CommentLiked comment);
+
     }
 }

@@ -163,6 +163,31 @@ namespace RedditClone.Web.Api.Controllers
             }
         }
 
+        [HttpPost("LikeComment")]
+
+        public async Task<IActionResult> CommentLike([FromBody] CommentLiked comment)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestModelState();
+                }
+
+                else
+                {
+                    return Ok(await _service.CommentLike(comment));
+                }
+            }
+
+            catch (Exception ex)
+            {
+                ErrorResponse response = new ErrorResponse($"Error: ${ex.Message}");
+
+                return StatusCode(500, response);
+            }
+        }
+
         [HttpGet("SubNames")]
 
         public async Task<IActionResult> GetSubNames()

@@ -20,7 +20,7 @@ namespace Reddit.Services.Services
 
         User _user = new User();
         Comment _comment = new Comment();
-        CommentLiked _commentLiked = new CommentLiked();
+        CommentLike _commentLiked = new CommentLike();
         Post _post = new Post();
         PostLike _postLiked = new PostLike();
         SubMember _subMember = new SubMember();
@@ -177,6 +177,25 @@ namespace Reddit.Services.Services
                 _postLiked = response.FirstOrDefault();
 
                 return _postLiked;
+            }
+        }
+        public async Task<CommentLike> CommentLike(CommentLiked comment)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_Comments_Like_Dislike_ADD]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@commentLikeDislikeId", 0, DbType.Int32, ParameterDirection.Output);
+                parameter.Add("@likeDislikeCommentId", comment.LikeDislikeCommentId);
+                parameter.Add("@commentLikeDislikeUserId", comment.CommentLikeDislikeUserId);
+                parameter.Add("@commentIsLike", comment.CommentIsLike);
+
+                var response = await Connection.QueryAsync<CommentLike>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _commentLiked = response.FirstOrDefault();
+
+                return _commentLiked;
             }
         }
 

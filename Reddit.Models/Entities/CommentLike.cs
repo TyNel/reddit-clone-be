@@ -12,7 +12,9 @@ namespace Reddit.Models.Entities
 
         public int CommentLikeDislikeUserId { get; set; }
 
-        public byte CommentIsLike { get; set; }
+        public int CommentIsLike { get; set; }
+
+        public int VoteCount { get; set; }
 
         public DateTime DateAdded { get; set; }
     }
