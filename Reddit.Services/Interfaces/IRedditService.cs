@@ -28,11 +28,20 @@ namespace Reddit.Services.Interfaces
 
         Task<IEnumerable<Post>> GetPosts();
 
+        Task<IEnumerable<Post>> GetSubPosts(int subId);
+
         Task<IEnumerable<Comment>> GetComments(int postId);
 
         Task<PostLike> PostLike(PostLiked post);
 
         Task<CommentLike> CommentLike(CommentLiked comment);
+
+        Task<IEnumerable<UserLikedComments>> GetUserCommentLikes(int postId, int userId);
+
+        Task<IEnumerable<PostSearched>> SearchPosts(string query);
+
+        Task<IEnumerable<SubReddit>> GetRandomSubs();
+
 
     }
 }

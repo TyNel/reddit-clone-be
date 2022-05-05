@@ -18,7 +18,7 @@ namespace Reddit.Models.Entities
 
         public string PostBodyText { get; set; }
 
-        public string postImageUrl { get; set; }
+        public string PostImageUrl { get; set; }
 
         public string PostLink { get; set; }
 

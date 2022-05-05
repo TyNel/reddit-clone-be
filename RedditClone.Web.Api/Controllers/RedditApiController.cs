@@ -220,11 +220,95 @@ namespace RedditClone.Web.Api.Controllers
             }
         }
 
+        [HttpGet("UserLikedComments")]
+
+        public async Task<IActionResult> GetUserCommentLikes(int postId, int userId)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestModelState();
+                }
+
+                else
+                {
+                    return Ok(await _service.GetUserCommentLikes(postId, userId));
+                }
+            }
+
+            catch (Exception ex)
+            {
+                ErrorResponse response = new ErrorResponse($"Error: ${ex.Message}");
+
+                return StatusCode(500, response);
+            }
+        }
+
         [HttpGet("Posts")]
 
         public async Task<IActionResult> GetPosts()
         {
             return Ok(await _service.GetPosts());
+        }
+
+        [HttpGet("RandomSubs")]
+
+        public async Task<IActionResult> GetRandomSubs()
+        {
+            return Ok(await _service.GetRandomSubs());
+        }
+
+        [HttpGet("SubPosts")]
+
+        public async Task<IActionResult> GetSubPosts(int subId)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestModelState();
+                }
+
+                else
+                {
+                    return Ok(await _service.GetSubPosts(subId));
+                }
+            }
+
+            catch (Exception ex)
+            {
+                ErrorResponse response = new ErrorResponse($"Error: ${ex.Message}");
+
+                return StatusCode(500, response);
+            }
+           
+        }
+
+        [HttpGet("SearchPosts")]
+
+        public async Task<IActionResult> SearchPosts(string query)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestModelState();
+                }
+
+                else
+                {
+                    return Ok(await _service.SearchPosts(query));
+                }
+            }
+
+            catch (Exception ex)
+            {
+                ErrorResponse response = new ErrorResponse($"Error: ${ex.Message}");
+
+                return StatusCode(500, response);
+            }
+
         }
 
         [HttpGet("Comments")]

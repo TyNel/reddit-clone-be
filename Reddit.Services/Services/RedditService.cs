@@ -28,6 +28,7 @@ namespace Reddit.Services.Services
         SubRule _subRule = new SubRule();
         SubTopic _subTopic = new SubTopic();
         SubNames _subName = new SubNames();
+        UserLikedComments _userVotes = new UserLikedComments();
 
         public RedditService(IConfiguration configuration)
         {
@@ -229,6 +230,25 @@ namespace Reddit.Services.Services
             }
         }
 
+        public async Task<IEnumerable<UserLikedComments>> GetUserCommentLikes(int postId, int userId)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_User_CommentVotes_GET]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@postId", postId);
+                parameter.Add("@userId", userId);
+
+
+                var response = await Connection.QueryAsync<UserLikedComments>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                return response.ToList();
+
+        
+            }
+        }
+
         public async Task<IEnumerable<Post>> GetPosts()
         {
             using (IDbConnection dbConnection = Connection)
@@ -236,6 +256,48 @@ namespace Reddit.Services.Services
                 var proc = "[dbo].[R_Posts_GET]";
 
                 var response = await Connection.QueryAsync<Post>(proc, commandType: CommandType.StoredProcedure);
+
+                return response.ToList();
+            }
+        }
+
+        public async Task<IEnumerable<Post>> GetSubPosts(int subId)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_SubReddits_Posts_GET]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@subId", subId);
+                
+                var response = await Connection.QueryAsync<Post>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                return response.ToList();
+            }
+        }
+
+        public async Task<IEnumerable<SubReddit>> GetRandomSubs()
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_SubReddits_GET_RANDOM]";
+            
+                var response = await Connection.QueryAsync<SubReddit>(proc, commandType: CommandType.StoredProcedure);
+
+                return response.ToList();
+            }
+        }
+
+        public async Task<IEnumerable<PostSearched>> SearchPosts(string query)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_Posts_Search]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@query", query);
+
+                var response = await Connection.QueryAsync<PostSearched>(proc, parameter, commandType: CommandType.StoredProcedure);
 
                 return response.ToList();
             }
