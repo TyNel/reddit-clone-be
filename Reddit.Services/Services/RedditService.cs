@@ -29,6 +29,7 @@ namespace Reddit.Services.Services
         SubTopic _subTopic = new SubTopic();
         SubNames _subName = new SubNames();
         UserLikedComments _userVotes = new UserLikedComments();
+        PostSearched _postSearched = new PostSearched();
 
         public RedditService(IConfiguration configuration)
         {
@@ -137,7 +138,7 @@ namespace Reddit.Services.Services
             }
         }
 
-        public async Task<Post> AddPost(PostAdd post)
+        public async Task<PostSearched> AddPost(PostAdd post)
         {
             using (IDbConnection dbConnection = Connection)
             {
@@ -153,11 +154,11 @@ namespace Reddit.Services.Services
                 parameter.Add("@postLink", post.PostLink);
                
 
-                var response = await Connection.QueryAsync<Post>(proc, parameter, commandType: CommandType.StoredProcedure);
+                var response = await Connection.QueryAsync<PostSearched>(proc, parameter, commandType: CommandType.StoredProcedure);
 
-                _post = response.FirstOrDefault();
+                _postSearched = response.FirstOrDefault();
 
-                return _post;
+                return _postSearched;
             }
         }
 
@@ -283,6 +284,18 @@ namespace Reddit.Services.Services
                 var proc = "[dbo].[R_SubReddits_GET_RANDOM]";
             
                 var response = await Connection.QueryAsync<SubReddit>(proc, commandType: CommandType.StoredProcedure);
+
+                return response.ToList();
+            }
+        }
+
+        public async Task<IEnumerable<PostSearched>> GetTrendingPosts()
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_Posts_GET_RANDOM]";
+
+                var response = await Connection.QueryAsync<PostSearched>(proc, commandType: CommandType.StoredProcedure);
 
                 return response.ToList();
             }

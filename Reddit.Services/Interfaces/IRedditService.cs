@@ -20,7 +20,7 @@ namespace Reddit.Services.Interfaces
 
         Task<Comment> AddComment(CommentAdd comment);
 
-        Task<Post> AddPost(PostAdd post);
+        Task<PostSearched> AddPost(PostAdd post);
 
         Task<IEnumerable<SubNames>> GetSubNames();
 
@@ -41,6 +41,9 @@ namespace Reddit.Services.Interfaces
         Task<IEnumerable<PostSearched>> SearchPosts(string query);
 
         Task<IEnumerable<SubReddit>> GetRandomSubs();
+
+        Task<IEnumerable<PostSearched>> GetTrendingPosts();
+
 
 
     }

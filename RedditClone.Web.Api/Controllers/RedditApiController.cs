@@ -259,6 +259,13 @@ namespace RedditClone.Web.Api.Controllers
             return Ok(await _service.GetRandomSubs());
         }
 
+        [HttpGet("TrendingPosts")]
+
+        public async Task<IActionResult> GetTrendingPosts()
+        {
+            return Ok(await _service.GetTrendingPosts());
+        }
+
         [HttpGet("SubPosts")]
 
         public async Task<IActionResult> GetSubPosts(int subId)
