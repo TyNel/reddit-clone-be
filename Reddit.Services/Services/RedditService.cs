@@ -250,13 +250,16 @@ namespace Reddit.Services.Services
             }
         }
 
-        public async Task<IEnumerable<Post>> GetPosts()
+        public async Task<IEnumerable<Post>> GetPosts(int pageNumber, int pageSize)
         {
             using (IDbConnection dbConnection = Connection)
             {
-                var proc = "[dbo].[R_Posts_GET]";
+                var proc = "[dbo].[R_Posts_Pagination]";
+                var parameter = new DynamicParameters();
+                parameter.Add("@pageNumber", pageNumber);
+                parameter.Add("@pageSize", pageSize);
 
-                var response = await Connection.QueryAsync<Post>(proc, commandType: CommandType.StoredProcedure);
+                var response = await Connection.QueryAsync<Post>(proc, parameter, commandType: CommandType.StoredProcedure);
 
                 return response.ToList();
             }

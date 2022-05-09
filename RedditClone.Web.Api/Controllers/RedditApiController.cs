@@ -247,9 +247,9 @@ namespace RedditClone.Web.Api.Controllers
 
         [HttpGet("Posts")]
 
-        public async Task<IActionResult> GetPosts()
+        public async Task<IActionResult> GetPosts(int pageNumber, int pageSize)
         {
-            return Ok(await _service.GetPosts());
+            return Ok(await _service.GetPosts(pageNumber, pageSize));
         }
 
         [HttpGet("RandomSubs")]
