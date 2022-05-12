@@ -18,7 +18,7 @@ namespace Reddit.Models.Requests
         public string RuleTitle { get; set; }
 
        
-        [StringLength(100, MinimumLength = 1)]
+        [StringLength(500, MinimumLength = 1)]
 
         public string RuleDescription { get; set; }
     }

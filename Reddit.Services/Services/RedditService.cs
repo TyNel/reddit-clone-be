@@ -30,6 +30,7 @@ namespace Reddit.Services.Services
         SubNames _subName = new SubNames();
         UserLikedComments _userVotes = new UserLikedComments();
         PostSearched _postSearched = new PostSearched();
+        SubReddit _SubReddit = new SubReddit();
 
         public RedditService(IConfiguration configuration)
         {
@@ -65,6 +66,30 @@ namespace Reddit.Services.Services
             }
         }
 
+        public async Task<SubReddit> AddSub(SubRedditAdd sub)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_Subreddits_ADD]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("subId", 0, DbType.Int32, ParameterDirection.Output);
+                parameter.Add("@subName", sub.SubName);
+                parameter.Add("@subDescription", sub.SubDescription);
+                parameter.Add("@subImage", sub.SubImage);
+                parameter.Add("@subIcon", sub.SubIcon);
+                parameter.Add("@subCategory", sub.SubCategory);
+                parameter.Add("@admin", sub.Admin);
+
+                var response = await Connection.QueryAsync<SubReddit>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _SubReddit = response.FirstOrDefault();
+
+                return _SubReddit;
+
+            }
+        }
+
         public async Task<User> GetUserByEmail(string email)
         {
             using(IDbConnection dbConnection = Connection)
@@ -96,6 +121,23 @@ namespace Reddit.Services.Services
                 _user = response.FirstOrDefault();
 
                 return _user;
+            }
+        }
+
+        public async Task<SubReddit> GetSubByName(string subName)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_SubReddits_GetByName]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@subName", subName);
+
+                var response = await Connection.QueryAsync<SubReddit>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _SubReddit = response.FirstOrDefault();
+
+                return _SubReddit;
             }
         }
 
@@ -135,6 +177,26 @@ namespace Reddit.Services.Services
                 _comment = response.FirstOrDefault();
 
                 return _comment;
+            }
+        }
+
+        public async Task<SubRule> AddRule(SubRuleAdd rule)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_SubRules_ADD]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@ruleId", 0, DbType.Int32, ParameterDirection.Output);
+                parameter.Add("@ruleParentId", rule.RuleParentId);
+                parameter.Add("@ruleTitle", rule.RuleTitle);
+                parameter.Add("@ruleDescription", rule.RuleDescription);
+
+                var response = await Connection.QueryAsync<SubRule>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _subRule = response.FirstOrDefault();
+
+                return _subRule;
             }
         }
 
@@ -314,6 +376,21 @@ namespace Reddit.Services.Services
                 parameter.Add("@query", query);
 
                 var response = await Connection.QueryAsync<PostSearched>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                return response.ToList();
+            }
+        }
+
+        public async Task<IEnumerable<SubNames>> SearchSubNames(string query)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_Subreddits_Search]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@query", query);
+
+                var response = await Connection.QueryAsync<SubNames>(proc, parameter, commandType: CommandType.StoredProcedure);
 
                 return response.ToList();
             }

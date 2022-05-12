@@ -44,6 +44,14 @@ namespace Reddit.Services.Interfaces
 
         Task<IEnumerable<PostSearched>> GetTrendingPosts();
 
+        Task<IEnumerable<SubNames>> SearchSubNames(string query);
+
+        Task<SubReddit> AddSub(SubRedditAdd sub);
+
+        Task<SubReddit> GetSubByName(string subName);
+
+        Task<SubRule> AddRule(SubRuleAdd rule);
+
 
 
     }

@@ -24,6 +24,8 @@ namespace Reddit.Models.Entities
 
        public string Topics { get; set; }
 
+       public int? Admin { get; set; }
+
        public DateTime DateAdded { get; set; }
     }
 }

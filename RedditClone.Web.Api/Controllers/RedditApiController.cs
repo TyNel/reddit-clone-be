@@ -63,6 +63,41 @@ namespace RedditClone.Web.Api.Controllers
 
         }
 
+        [HttpPost("AddSub")]
+
+        public async Task<IActionResult> AddSub([FromBody] SubRedditAdd sub)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestModelState();
+                }
+
+                SubReddit existingName = await _service.GetSubByName(sub.SubName);
+
+                if (existingName != null)
+                {
+                    return Conflict(new ErrorResponse("Subreddit name already exists"));
+                }
+
+                else
+                {
+                    return Ok(await _service.AddSub(sub));
+                }
+            }
+
+            catch (Exception ex)
+
+            {
+                ErrorResponse response = new ErrorResponse($"Error: ${ex.Message}");
+
+                return StatusCode(500, response);
+            }
+
+
+        }
+
         [HttpPost("UserLogin")]
 
         public async Task<IActionResult> UserLogin([FromBody] UserLogin user)
@@ -177,6 +212,31 @@ namespace RedditClone.Web.Api.Controllers
                 else
                 {
                     return Ok(await _service.CommentLike(comment));
+                }
+            }
+
+            catch (Exception ex)
+            {
+                ErrorResponse response = new ErrorResponse($"Error: ${ex.Message}");
+
+                return StatusCode(500, response);
+            }
+        }
+
+        [HttpPost("AddRule")]
+
+        public async Task<IActionResult> AddRule([FromBody] SubRuleAdd rule)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestModelState();
+                }
+
+                else
+                {
+                    return Ok(await _service.AddRule(rule));
                 }
             }
 
@@ -306,6 +366,32 @@ namespace RedditClone.Web.Api.Controllers
                 else
                 {
                     return Ok(await _service.SearchPosts(query));
+                }
+            }
+
+            catch (Exception ex)
+            {
+                ErrorResponse response = new ErrorResponse($"Error: ${ex.Message}");
+
+                return StatusCode(500, response);
+            }
+
+        }
+
+        [HttpGet("SearchSubNames")]
+
+        public async Task<IActionResult> SearchSubNames(string query)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestModelState();
+                }
+
+                else
+                {
+                    return Ok(await _service.SearchSubNames(query));
                 }
             }
 
