@@ -342,6 +342,23 @@ namespace Reddit.Services.Services
             }
         }
 
+        public async Task<Post> GetCurrentPost(int postId)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_Posts_GET]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@postId", postId);
+
+                var response = await Connection.QueryAsync<Post>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _post = response.FirstOrDefault();
+
+                return _post;
+            }
+        }
+
         public async Task<IEnumerable<SubReddit>> GetRandomSubs()
         {
             using (IDbConnection dbConnection = Connection)

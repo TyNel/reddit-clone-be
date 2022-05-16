@@ -10,7 +10,7 @@ namespace Reddit.Models.Entities
     {
         public int UserId { get; set; }
 
-        public int CommentId { get; set; }
+        public int LikeDislikeCommentId { get; set; }
 
         public int CommentIsLike { get; set; }
     }

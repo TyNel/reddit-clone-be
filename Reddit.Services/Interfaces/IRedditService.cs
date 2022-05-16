@@ -28,6 +28,8 @@ namespace Reddit.Services.Interfaces
 
         Task<IEnumerable<Post>> GetPosts(int pageNumber, int pageSize);
 
+        Task<Post> GetCurrentPost(int postId);
+
         Task<IEnumerable<Post>> GetSubPosts(int subId);
 
         Task<IEnumerable<Comment>> GetComments(int postId);

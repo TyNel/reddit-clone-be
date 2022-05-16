@@ -309,7 +309,50 @@ namespace RedditClone.Web.Api.Controllers
 
         public async Task<IActionResult> GetPosts(int pageNumber, int pageSize)
         {
-            return Ok(await _service.GetPosts(pageNumber, pageSize));
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestModelState();
+                }
+
+                else
+                {
+                    return Ok(await _service.GetPosts(pageNumber, pageSize));
+                }
+            }
+
+            catch (Exception ex)
+            {
+                ErrorResponse response = new ErrorResponse($"Error: ${ex.Message}");
+
+                return StatusCode(500, response);
+            }
+        }
+
+        [HttpGet("CurrentPost")]
+
+        public async Task<IActionResult> GetCurrentPost(int postId)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestModelState();
+                }
+
+                else
+                {
+                    return Ok(await _service.GetCurrentPost(postId));
+                }
+            }
+
+            catch (Exception ex)
+            {
+                ErrorResponse response = new ErrorResponse($"Error: ${ex.Message}");
+
+                return StatusCode(500, response);
+            }
         }
 
         [HttpGet("RandomSubs")]

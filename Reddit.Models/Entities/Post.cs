@@ -24,6 +24,8 @@ namespace Reddit.Models.Entities
 
         public string SubName { get; set; }
 
+        public string SubIcon { get; set; }
+
         public int VoteCount { get; set; }
 
         public int CommentCount { get; set; }
