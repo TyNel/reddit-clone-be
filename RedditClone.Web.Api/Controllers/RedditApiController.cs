@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Reddit.Models.Entities;
 using Reddit.Models.Requests;
+using Reddit.Services.CommonMethods;
 using Reddit.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ namespace RedditClone.Web.Api.Controllers
         {
             _service = service;
         }
+
+        //POSTS
 
         [HttpPost("AddUser")]
 
@@ -106,13 +109,27 @@ namespace RedditClone.Web.Api.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequestModelState();
+                    return BadRequest(new ErrorResponse("Username doesn't match"));
                 }
 
-                else
+                User existingUsername = await _service.GetUserByUsername(user.Username);
+
+
+                if (existingUsername == null)
                 {
-                    return Ok(await _service.UserLogin(user));
+                    return Unauthorized(new ErrorResponse("Username doesn't match"));
                 }
+
+                var LoginUser = await _service.UserLogin(user);
+
+                if (LoginUser == null)
+                {
+                    return BadRequest(new ErrorResponse("Username or password doesn't match"));
+                }
+
+          
+                return Ok(await _service.UserLogin(user));
+
             }
 
             catch (Exception ex)
@@ -247,6 +264,8 @@ namespace RedditClone.Web.Api.Controllers
                 return StatusCode(500, response);
             }
         }
+
+        //GETS
 
         [HttpGet("SubNames")]
 

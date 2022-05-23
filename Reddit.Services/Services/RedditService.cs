@@ -45,6 +45,9 @@ namespace Reddit.Services.Services
             }
         }
 
+
+        //ADD METHODS
+
         public async Task<int> AddUser(UserAdd user)
         {
             using(IDbConnection dbConnection = Connection)
@@ -89,6 +92,112 @@ namespace Reddit.Services.Services
 
             }
         }
+
+        public async Task<Comment> AddComment(CommentAdd comment)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_Comments_ADD]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@commentId", 0, DbType.Int32, ParameterDirection.Output);
+                parameter.Add("@commentUserId", comment.CommentUserId);
+                parameter.Add("@commentParentId", comment.CommentParentId);
+                parameter.Add("@commentBody", comment.CommentBody);
+                parameter.Add("@commentParentPostId", comment.CommentParentPostId);
+
+                var response = await Connection.QueryAsync<Comment>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _comment = response.FirstOrDefault();
+
+                return _comment;
+            }
+        }
+
+        public async Task<SubRule> AddRule(SubRuleAdd rule)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_SubRules_ADD]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@ruleId", 0, DbType.Int32, ParameterDirection.Output);
+                parameter.Add("@ruleParentId", rule.RuleParentId);
+                parameter.Add("@ruleTitle", rule.RuleTitle);
+                parameter.Add("@ruleDescription", rule.RuleDescription);
+
+                var response = await Connection.QueryAsync<SubRule>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _subRule = response.FirstOrDefault();
+
+                return _subRule;
+            }
+        }
+
+        public async Task<PostSearched> AddPost(PostAdd post)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_Posts_ADD]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@postId", 0, DbType.Int32, ParameterDirection.Output);
+                parameter.Add("@postAuthor", post.PostAuthor);
+                parameter.Add("@postCommunity", post.PostCommunity);
+                parameter.Add("@postTitle", post.PostTitle);
+                parameter.Add("@postBodyText", post.PostBody);
+                parameter.Add("@postImageUrl", post.PostImageUrl);
+                parameter.Add("@postLink", post.PostLink);
+
+
+                var response = await Connection.QueryAsync<PostSearched>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _postSearched = response.FirstOrDefault();
+
+                return _postSearched;
+            }
+        }
+
+        public async Task<PostLike> PostLike(PostLiked post)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_Posts_Like_Dislike_ADD]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@postLikeDislikeId", 0, DbType.Int32, ParameterDirection.Output);
+                parameter.Add("@likeDislikePostId", post.LikeDislikePostId);
+                parameter.Add("@postLikeDislikeUserId", post.LikeDislikeUserId);
+                parameter.Add("@postIsLike", post.PostIsLike);
+
+                var response = await Connection.QueryAsync<PostLike>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _postLiked = response.FirstOrDefault();
+
+                return _postLiked;
+            }
+        }
+        public async Task<CommentLike> CommentLike(CommentLiked comment)
+        {
+            using (IDbConnection dbConnection = Connection)
+            {
+                var proc = "[dbo].[R_Comments_Like_Dislike_ADD]";
+                var parameter = new DynamicParameters();
+
+                parameter.Add("@commentLikeDislikeId", 0, DbType.Int32, ParameterDirection.Output);
+                parameter.Add("@likeDislikeCommentId", comment.LikeDislikeCommentId);
+                parameter.Add("@commentLikeDislikeUserId", comment.CommentLikeDislikeUserId);
+                parameter.Add("@commentIsLike", comment.CommentIsLike);
+
+                var response = await Connection.QueryAsync<CommentLike>(proc, parameter, commandType: CommandType.StoredProcedure);
+
+                _commentLiked = response.FirstOrDefault();
+
+                return _commentLiked;
+            }
+        }
+
+        //GET METHODS
 
         public async Task<User> GetUserByEmail(string email)
         {
@@ -158,111 +267,6 @@ namespace Reddit.Services.Services
                 return _user;
             }
         }
-
-        public async Task<Comment> AddComment(CommentAdd comment)
-        {
-            using(IDbConnection dbConnection = Connection)
-            {
-                var proc = "[dbo].[R_Comments_ADD]";
-                var parameter = new DynamicParameters();
-
-                parameter.Add("@commentId", 0, DbType.Int32, ParameterDirection.Output);
-                parameter.Add("@commentUserId", comment.CommentUserId);
-                parameter.Add("@commentParentId", comment.CommentParentId);
-                parameter.Add("@commentBody", comment.CommentBody);
-                parameter.Add("@commentParentPostId", comment.CommentParentPostId);
-
-                var response = await Connection.QueryAsync<Comment>(proc, parameter, commandType: CommandType.StoredProcedure);
-
-                _comment = response.FirstOrDefault();
-
-                return _comment;
-            }
-        }
-
-        public async Task<SubRule> AddRule(SubRuleAdd rule)
-        {
-            using (IDbConnection dbConnection = Connection)
-            {
-                var proc = "[dbo].[R_SubRules_ADD]";
-                var parameter = new DynamicParameters();
-
-                parameter.Add("@ruleId", 0, DbType.Int32, ParameterDirection.Output);
-                parameter.Add("@ruleParentId", rule.RuleParentId);
-                parameter.Add("@ruleTitle", rule.RuleTitle);
-                parameter.Add("@ruleDescription", rule.RuleDescription);
-
-                var response = await Connection.QueryAsync<SubRule>(proc, parameter, commandType: CommandType.StoredProcedure);
-
-                _subRule = response.FirstOrDefault();
-
-                return _subRule;
-            }
-        }
-
-        public async Task<PostSearched> AddPost(PostAdd post)
-        {
-            using (IDbConnection dbConnection = Connection)
-            {
-                var proc = "[dbo].[R_Posts_ADD]";
-                var parameter = new DynamicParameters();
-
-                parameter.Add("@postId", 0, DbType.Int32, ParameterDirection.Output);
-                parameter.Add("@postAuthor", post.PostAuthor);
-                parameter.Add("@postCommunity", post.PostCommunity);
-                parameter.Add("@postTitle", post.PostTitle);
-                parameter.Add("@postBodyText", post.PostBody);
-                parameter.Add("@postImageUrl", post.PostImageUrl);
-                parameter.Add("@postLink", post.PostLink);
-               
-
-                var response = await Connection.QueryAsync<PostSearched>(proc, parameter, commandType: CommandType.StoredProcedure);
-
-                _postSearched = response.FirstOrDefault();
-
-                return _postSearched;
-            }
-        }
-
-        public async Task<PostLike> PostLike(PostLiked post)
-        {
-            using (IDbConnection dbConnection = Connection)
-            {
-                var proc = "[dbo].[R_Posts_Like_Dislike_ADD]";
-                var parameter = new DynamicParameters();
-
-                parameter.Add("@postLikeDislikeId", 0, DbType.Int32, ParameterDirection.Output);
-                parameter.Add("@likeDislikePostId", post.LikeDislikePostId);
-                parameter.Add("@postLikeDislikeUserId", post.LikeDislikeUserId);
-                parameter.Add("@postIsLike", post.PostIsLike);
-                
-                var response = await Connection.QueryAsync<PostLike>(proc, parameter, commandType: CommandType.StoredProcedure);
-
-                _postLiked = response.FirstOrDefault();
-
-                return _postLiked;
-            }
-        }
-        public async Task<CommentLike> CommentLike(CommentLiked comment)
-        {
-            using (IDbConnection dbConnection = Connection)
-            {
-                var proc = "[dbo].[R_Comments_Like_Dislike_ADD]";
-                var parameter = new DynamicParameters();
-
-                parameter.Add("@commentLikeDislikeId", 0, DbType.Int32, ParameterDirection.Output);
-                parameter.Add("@likeDislikeCommentId", comment.LikeDislikeCommentId);
-                parameter.Add("@commentLikeDislikeUserId", comment.CommentLikeDislikeUserId);
-                parameter.Add("@commentIsLike", comment.CommentIsLike);
-
-                var response = await Connection.QueryAsync<CommentLike>(proc, parameter, commandType: CommandType.StoredProcedure);
-
-                _commentLiked = response.FirstOrDefault();
-
-                return _commentLiked;
-            }
-        }
-
         public async Task<IEnumerable<SubNames>> GetSubNames()
         {
             using (IDbConnection dbConnection = Connection)
