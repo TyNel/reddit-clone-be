@@ -40,7 +40,7 @@ namespace RedditClone.Web.Api
             {
                 options.AddPolicy("CORSPolicy",
 
-                      builder => builder.WithOrigins("http://localhost:3000")
+                      builder => builder.WithOrigins("http://localhost:3000", "https://ty-social-app.netlify.app")
                       .AllowAnyMethod()
                       .AllowAnyHeader()
                       .AllowCredentials()
@@ -72,7 +72,8 @@ namespace RedditClone.Web.Api
             {
                 endpoints.MapControllers();
             });
-           
+
+          
         }
     }
 }
