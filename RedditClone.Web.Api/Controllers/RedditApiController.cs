@@ -109,7 +109,7 @@ namespace RedditClone.Web.Api.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(new ErrorResponse("Username doesn't match"));
+                    return BadRequest(new ErrorResponse("Username or password don't match"));
                 }
 
                 User existingUsername = await _service.GetUserByUsername(user.Username);
@@ -117,14 +117,14 @@ namespace RedditClone.Web.Api.Controllers
 
                 if (existingUsername == null)
                 {
-                    return Unauthorized(new ErrorResponse("Username doesn't match"));
+                    return Unauthorized(new ErrorResponse("Username don't match"));
                 }
 
                 var LoginUser = await _service.UserLogin(user);
 
                 if (LoginUser == null)
                 {
-                    return BadRequest(new ErrorResponse("Username or password doesn't match"));
+                    return BadRequest(new ErrorResponse("Username or password don't match"));
                 }
 
           
