@@ -18,11 +18,11 @@ namespace Reddit.Models.Requests
         [StringLength(100, MinimumLength = 1)]
         public string SubDescription { get; set; }
 
-        [StringLength(100, MinimumLength = 1)]
+        [StringLength(300, MinimumLength = 1)]
         
         public string SubImage { get; set; }
 
-        [StringLength(100, MinimumLength = 1)]
+        [StringLength(300, MinimumLength = 1)]
 
         public string SubIcon { get; set; }
 
