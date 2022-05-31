@@ -117,7 +117,7 @@ namespace RedditClone.Web.Api.Controllers
 
                 if (existingUsername == null)
                 {
-                    return Unauthorized(new ErrorResponse("Username don't match"));
+                    return Unauthorized(new ErrorResponse("Username wasn't found"));
                 }
 
                 var LoginUser = await _service.UserLogin(user);
